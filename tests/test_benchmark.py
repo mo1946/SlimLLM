@@ -6,8 +6,8 @@ import unittest
 
 import httpx
 
-from benchmark import fixed_records, latency_stats, request_one, summarize
-from runtime import ROOT, read_jsonl
+from slimllm.evaluation.benchmark import fixed_records, latency_stats, request_one, summarize
+from slimllm.runtime import ROOT, read_jsonl
 
 
 class BenchmarkTests(unittest.TestCase):

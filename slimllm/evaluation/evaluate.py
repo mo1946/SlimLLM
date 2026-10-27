@@ -5,8 +5,8 @@ import json
 
 from pydantic import ValidationError
 
-from runtime import configure, file_hash, project_path, read_jsonl, save_json
-from schema import AfterSalesTicket
+from slimllm.runtime import configure, file_hash, project_path, read_jsonl, save_json
+from slimllm.schema import AfterSalesTicket
 
 FIELDS = tuple(AfterSalesTicket.model_fields)
 

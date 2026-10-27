@@ -5,7 +5,7 @@ import math
 import threading
 import unittest
 
-from request_queue import InferenceQueue, QueueOverloaded, QueueStopped, QueueWaitTimeout
+from slimllm.serving.request_queue import InferenceQueue, QueueOverloaded, QueueStopped, QueueWaitTimeout
 
 
 class BlockingEngine:

@@ -10,11 +10,11 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, ConfigDict, Field
 from starlette.concurrency import run_in_threadpool
 
-from inference import Extractor, InputTooLong, InvalidModelOutput, validate_output
-from request_queue import InferenceQueue, QueueOverloaded, QueueStopped, QueueWaitTimeout
-from response_cache import RedisExactCache
-from schema import AfterSalesTicket
-from vllm_backend import VllmExtractor, BackendRequestRejected, BackendTimeout, BackendUnavailable
+from slimllm.serving.inference import Extractor, InputTooLong, InvalidModelOutput, validate_output
+from slimllm.serving.request_queue import InferenceQueue, QueueOverloaded, QueueStopped, QueueWaitTimeout
+from slimllm.serving.response_cache import RedisExactCache
+from slimllm.schema import AfterSalesTicket
+from slimllm.serving.vllm_backend import VllmExtractor, BackendRequestRejected, BackendTimeout, BackendUnavailable
 
 logger = logging.getLogger('slimllm.api')
 

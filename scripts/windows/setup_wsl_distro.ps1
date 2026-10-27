@@ -3,7 +3,7 @@
 param([ValidateSet('Check', 'Install')][string]$Stage = 'Check')
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
-$projectRoot = [IO.Path]::GetFullPath($PSScriptRoot).TrimEnd('\')
+$projectRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..')).TrimEnd('\')
 if ($projectRoot -ne 'B:\python\SlimLLM') { throw 'Run only from B:\python\SlimLLM.' }
 $distroName = 'SlimLLM-Ubuntu'
 $distroRoot = Join-Path $projectRoot '.wsl\Ubuntu'

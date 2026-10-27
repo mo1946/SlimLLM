@@ -3,7 +3,7 @@
 param([ValidateSet('Check', 'Core')][string]$Stage = 'Check')
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
-$projectRoot = [System.IO.Path]::GetFullPath($PSScriptRoot).TrimEnd('\')
+$projectRoot = [System.IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..')).TrimEnd('\')
 if ($projectRoot -ne 'B:\python\SlimLLM') { throw 'Run only from B:\python\SlimLLM.' }
 $isAdministrator = ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 $diskB = [System.IO.DriveInfo]::new('B:\')

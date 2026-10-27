@@ -5,8 +5,8 @@ import time
 
 import httpx
 
-from runtime import ROOT, read_jsonl, project_path, save_json
-from schema import AfterSalesTicket
+from slimllm.runtime import ROOT, read_jsonl, project_path, save_json
+from slimllm.schema import AfterSalesTicket
 
 
 def check_response(response: httpx.Response, text: str) -> dict:

@@ -8,7 +8,7 @@ if [[ "$mode" != check && "$mode" != install ]]; then
     echo 'Usage: bash setup_vllm.sh [check|install]' >&2
     exit 2
 fi
-[[ "$(realpath "$(dirname "${BASH_SOURCE[0]}")")" == "$project" ]] || { echo 'Unexpected project path.' >&2; exit 1; }
+[[ "$(realpath "$(dirname "${BASH_SOURCE[0]}")/../..")" == "$project" ]] || { echo 'Unexpected project path.' >&2; exit 1; }
 [[ "$(uname -r)" == *microsoft* ]] || { echo 'This script is for WSL2 only.' >&2; exit 1; }
 source /etc/os-release
 [[ "$ID" == ubuntu && "$VERSION_ID" == 24.04 ]] || { echo 'Expected Ubuntu 24.04.' >&2; exit 1; }
@@ -64,7 +64,7 @@ if [[ ! -e "$venv" ]]; then python3 -B -m venv "$venv"; fi
 "$venv/bin/python" -B -m pip install \
     --index-url https://pypi.org/simple --extra-index-url https://download.pytorch.org/whl/cu128 \
     --only-binary=:all: --no-cache-dir --no-compile \
-    -r "$project/requirements-vllm.txt" --report "$report"
+    -r "$project/requirements/requirements-vllm.txt" --report "$report"
 "$venv/bin/python" -B -m pip check
 "$venv/bin/python" -B -m pip freeze > "$lock"
 echo 'Linux dependencies installed. Model loading and GPU checks are separate; no weights downloaded or copied.'

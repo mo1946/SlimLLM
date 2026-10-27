@@ -40,12 +40,12 @@
 ```powershell
 Set-Location 'B:\python\SlimLLM'
 # 相同冻结测试集：先基座，再挂载既有 Adapter，无需重训
-& '.\.venv\Scripts\python.exe' -B baseline.py run --output reports/baseline_reproduce
-& '.\.venv\Scripts\python.exe' -B baseline.py run --adapter outputs/qlora/final_adapter --output reports/adapter_reproduce
-& '.\.venv\Scripts\python.exe' -B evaluate.py --run reports/baseline_reproduce
-& '.\.venv\Scripts\python.exe' -B evaluate.py --run reports/adapter_reproduce --compare-to reports/baseline_reproduce
+& '.\.venv\Scripts\python.exe' -B -m slimllm.training.baseline run --output reports/baseline_reproduce
+& '.\.venv\Scripts\python.exe' -B -m slimllm.training.baseline run --adapter outputs/qlora/final_adapter --output reports/adapter_reproduce
+& '.\.venv\Scripts\python.exe' -B -m slimllm.evaluation.evaluate --run reports/baseline_reproduce
+& '.\.venv\Scripts\python.exe' -B -m slimllm.evaluation.evaluate --run reports/adapter_reproduce --compare-to reports/baseline_reproduce
 # API 已就绪、缓存关闭后，重复当前实现的压测；不能冒充历史忙时拒绝版本
-& '.\.venv\Scripts\python.exe' -B benchmark.py --requests 32 --concurrency 1 2 4 8 --output reports/api_reproduce
+& '.\.venv\Scripts\python.exe' -B -m slimllm.evaluation.benchmark --requests 32 --concurrency 1 2 4 8 --output reports/api_reproduce
 ```
 
 原始来源保留在本机 `reports/stage1.md` 至 `stage4.md`、`data_report.md`、`stage2_preparation.md`、`concurrency.md`、`vllm.md` 与相应 JSON；发布摘要仅提取原值及来源哈希，不是新实验。历史报告按阶段记载当时状态，README 和本总结反映当前完成状态。
@@ -108,7 +108,7 @@ Transformers 路径一次只生成一个请求，CPU 等待区只把立即拒绝
 
 ## 本轮验收与发布边界
 
-已执行现有 60 项 unittest，全部通过、无跳过；已有 Starlette/httpx 弃用提示未通过安装新依赖消除。`train.py check` 无缺失依赖，API/Baseline/benchmark CLI 帮助可正常解析；未重启 GPU 服务，仅复用历史真实推理证据。原始实验报告与核心代码保持原样，展示文件另行生成。
+已执行现有 60 项 unittest，全部通过、无跳过；已有 Starlette/httpx 弃用提示未通过安装新依赖消除。`slimllm/training/train.py check` 无缺失依赖，API/Baseline/benchmark CLI 帮助可正常解析；未重启 GPU 服务，仅复用历史真实推理证据。原始实验报告与核心代码保持原样，展示文件另行生成。
 
 `.gitignore` 用报告白名单阻止机器探测/安装日志、逐请求文本和本机过程记录意外提交。实际 Git 规则验证通过 46 个用例，43 个发布候选文件未发现高置信密钥/机器标识或已知本地密钥的匹配；13 个文档相对链接均指向可发布文件。完整本机结果保存在 `reports/presentation_validation.json`（该文件本身不发布）；这不是对未知历史或未来文件的安全保证。整理时根目录不是 Git 仓库，验证使用项目 `.cache/tmp` 内的隔离 Git 元数据；没有初始化根仓库、提交、上传或更改许可证。
 

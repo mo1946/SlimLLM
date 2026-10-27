@@ -6,7 +6,7 @@ import os
 from pathlib import Path
 import sys
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 
 
 def configure() -> None:

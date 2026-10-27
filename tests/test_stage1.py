@@ -6,10 +6,10 @@ import sys
 import unittest
 from unittest.mock import patch
 
-from baseline import read_range
-from dataset import payload_for, split_records, validate_record
-from evaluate import score, strict_json
-from runtime import ROOT, project_path, read_jsonl
+from slimllm.training.baseline import read_range
+from slimllm.dataset import payload_for, split_records, validate_record
+from slimllm.evaluation.evaluate import score, strict_json
+from slimllm.runtime import ROOT, project_path, read_jsonl
 
 
 class StageOneTests(unittest.TestCase):
@@ -83,7 +83,7 @@ class StageOneTests(unittest.TestCase):
             split_records(rows)
 
     def test_review_dry_run_cannot_send_requests(self):
-        result = subprocess.run([sys.executable, '-B', str(ROOT / 'dataset.py'), 'review', '--dry-run'],
+        result = subprocess.run([sys.executable, '-B', '-m', 'slimllm.dataset', 'review', '--dry-run'],
                                 cwd=ROOT, capture_output=True, text=True)
         self.assertEqual(result.returncode, 2)
         self.assertIn('no request was sent', result.stderr)
@@ -97,7 +97,7 @@ class StageOneTests(unittest.TestCase):
                 return self
             def __exit__(self, *args):
                 return False
-        with patch('baseline.urllib.request.urlopen', return_value=Response()), patch('baseline.time.sleep'):
+        with patch('slimllm.training.baseline.urllib.request.urlopen', return_value=Response()), patch('slimllm.training.baseline.time.sleep'):
             with self.assertRaisesRegex(ValueError, 'wrong byte range'):
                 read_range('https://example.invalid/weight', 4, 7, 8)
 

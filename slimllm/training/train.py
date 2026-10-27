@@ -9,7 +9,7 @@ import os
 from pathlib import Path
 import time
 
-from runtime import ROOT, configure, file_hash, project_path, read_jsonl, save_json
+from slimllm.runtime import ROOT, configure, file_hash, project_path, read_jsonl, save_json
 
 REQUIRED = ('torch', 'transformers', 'safetensors', 'peft', 'trl', 'bitsandbytes', 'accelerate', 'datasets')
 TARGETS = ('q_proj', 'k_proj', 'v_proj', 'o_proj')
@@ -165,7 +165,7 @@ def load_training_model(config: TrainConfig):
     from bitsandbytes.nn import Linear4bit
     from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
     from transformers import BitsAndBytesConfig, GenerationConfig, Qwen3ForCausalLM, set_seed
-    from baseline import load_gpu_state
+    from slimllm.training.baseline import load_gpu_state
 
     if not torch.cuda.is_available() or not torch.cuda.is_bf16_supported():
         raise ValueError('This configuration requires a CUDA GPU supporting BF16; no silent fallback.')

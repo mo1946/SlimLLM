@@ -11,9 +11,9 @@ import sys
 import time
 import warnings
 
-from evaluate import score, strict_json
-from runtime import ROOT, append_jsonl, configure, file_hash, project_path, read_jsonl, save_json
-from schema import AfterSalesTicket
+from slimllm.evaluation.evaluate import score, strict_json
+from slimllm.runtime import ROOT, append_jsonl, configure, file_hash, project_path, read_jsonl, save_json
+from slimllm.schema import AfterSalesTicket
 
 
 REGRESSION_SHA256 = '8301b490afd7346b60f08471ad1baa4b809e696c9d75b246c5097092ef2367be'
@@ -27,7 +27,7 @@ def _digest(value) -> str:
 
 
 def load_evaluation_data() -> tuple[dict, dict]:
-    from benchmark import fixed_records
+    from slimllm.evaluation.benchmark import fixed_records
 
     frozen, provenance = fixed_records(50)
     path = ROOT / 'data/structured_cases.jsonl'
@@ -195,8 +195,8 @@ def collect_completion(engine, row: dict, payload: dict) -> dict:
 
 
 def _artifact_snapshot() -> dict:
-    names = ('evaluate_structured.py', 'vllm_backend.py', 'inference.py', 'baseline.py', 'schema.py', 'runtime.py',
-             'evaluate.py', 'benchmark.py', 'run_vllm.sh', 'data/ticket.schema.json',
+    names = ('slimllm/evaluation/evaluate_structured.py', 'slimllm/serving/vllm_backend.py', 'slimllm/serving/inference.py', 'slimllm/training/baseline.py', 'slimllm/schema.py', 'slimllm/runtime.py',
+             'slimllm/evaluation/evaluate.py', 'slimllm/evaluation/benchmark.py', 'scripts/wsl/run_vllm.sh', 'data/ticket.schema.json',
              'data/structured_cases.jsonl', 'data/generated/stage1/records.jsonl',
              'data/generated/stage1/splits.json', 'reports/baseline/run.json')
     return {name: file_hash(ROOT / name) for name in names}
@@ -243,8 +243,8 @@ def _write_comparison_report(output, summary):
 
 def compare(output_path: str, *, engine_factory=None) -> dict:
     """Sequential A/B against one existing engine. Injected factories are labelled test fixtures."""
-    from vllm_backend import VllmExtractor
-    from baseline import MODEL_ID, REVISION
+    from slimllm.serving.vllm_backend import VllmExtractor
+    from slimllm.training.baseline import MODEL_ID, REVISION
 
     output = project_path(output_path)
     if not output.is_relative_to((ROOT / 'reports').resolve()) or output == ROOT / 'reports':

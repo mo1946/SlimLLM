@@ -1,6 +1,6 @@
-# Dot-source from PowerShell: . .\setup_env.ps1
+# Dot-source from PowerShell: . .\scripts\windows\setup_env.ps1
 # Process-local configuration only; does not download or install anything.
-$projectRoot = $PSScriptRoot
+$projectRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..\..')).TrimEnd('\')
 $env:HF_HOME = Join-Path $projectRoot '.cache\huggingface'
 $env:HF_HUB_CACHE = Join-Path $env:HF_HOME 'hub'
 $env:HF_DATASETS_CACHE = Join-Path $env:HF_HOME 'datasets'

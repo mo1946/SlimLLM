@@ -3,7 +3,7 @@
 set -euo pipefail
 project=/mnt/b/python/SlimLLM
 venv=/opt/slimllm-venv
-[[ "$(realpath "$(dirname "${BASH_SOURCE[0]}")")" == "$project" ]] || exit 1
+[[ "$(realpath "$(dirname "${BASH_SOURCE[0]}")/../..")" == "$project" ]] || exit 1
 [[ -x "$venv/bin/vllm" ]] || { echo 'Install the separately approved Linux environment first.' >&2; exit 1; }
 export HF_HOME="$project/.cache/huggingface" HF_HUB_CACHE="$project/.cache/huggingface/hub"
 export HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 HF_HUB_DISABLE_TELEMETRY=1 HF_HUB_DISABLE_XET=1

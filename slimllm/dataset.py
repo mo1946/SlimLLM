@@ -15,8 +15,8 @@ import urllib.request
 
 from pydantic import ValidationError
 
-from runtime import ROOT, append_jsonl, configure, extraction_prompt, file_hash, project_path, read_jsonl, save_json
-from schema import AfterSalesTicket
+from slimllm.runtime import ROOT, append_jsonl, configure, extraction_prompt, file_hash, project_path, read_jsonl, save_json
+from slimllm.schema import AfterSalesTicket
 
 MODEL = 'deepseek-flash'
 INPUT_USD_PER_M = 0.30

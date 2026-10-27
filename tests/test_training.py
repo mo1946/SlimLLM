@@ -7,10 +7,10 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
-from baseline import adapter_provenance
-from evaluate import comparison
-from runtime import ROOT
-from train import TrainConfig, encode_example, frozen_data, padded_batch, train, trainer_options
+from slimllm.training.baseline import adapter_provenance
+from slimllm.evaluation.evaluate import comparison
+from slimllm.runtime import ROOT
+from slimllm.training.train import TrainConfig, encode_example, frozen_data, padded_batch, train, trainer_options
 
 
 class TokenizerFixture:
@@ -57,7 +57,7 @@ class TrainingTests(unittest.TestCase):
         self.assertEqual(provenance['train_ids'], split['ids']['train'])
 
     def test_source_tampering_stops_preparation(self):
-        with patch('train.file_hash', return_value='changed'):
+        with patch('slimllm.training.train.file_hash', return_value='changed'):
             with self.assertRaisesRegex(ValueError, 'hash mismatch'):
                 frozen_data(TrainConfig())
 
@@ -77,7 +77,7 @@ class TrainingTests(unittest.TestCase):
         self.assertTrue(options['gradient_checkpointing'])
 
     def test_missing_dependencies_stop_before_loading_model(self):
-        with patch('train.dependency_status', return_value={'missing': ['peft']}):
+        with patch('slimllm.training.train.dependency_status', return_value={'missing': ['peft']}):
             with self.assertRaisesRegex(ValueError, 'Missing training dependencies'):
                 train(TrainConfig())
 

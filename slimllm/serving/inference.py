@@ -8,10 +8,10 @@ import time
 
 from pydantic import ValidationError
 
-from baseline import MODEL_ID, REVISION, adapter_provenance, load_fp16_model
-from evaluate import strict_json
-from runtime import ROOT, configure, file_hash, project_path
-from schema import AfterSalesTicket
+from slimllm.training.baseline import MODEL_ID, REVISION, adapter_provenance, load_fp16_model
+from slimllm.evaluation.evaluate import strict_json
+from slimllm.runtime import ROOT, configure, file_hash, project_path
+from slimllm.schema import AfterSalesTicket
 
 
 class InputTooLong(ValueError):

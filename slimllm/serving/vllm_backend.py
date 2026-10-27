@@ -9,9 +9,9 @@ from urllib.parse import urlparse
 
 import httpx
 
-from inference import Extractor, InputTooLong, InvalidModelOutput, validate_output
-from runtime import ROOT, configure
-from schema import AfterSalesTicket
+from slimllm.serving.inference import Extractor, InputTooLong, InvalidModelOutput, validate_output
+from slimllm.runtime import ROOT, configure
+from slimllm.schema import AfterSalesTicket
 
 
 SUPPORTED_VLLM_VERSION = '0.11.2'

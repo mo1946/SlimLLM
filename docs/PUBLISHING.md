@@ -1,6 +1,26 @@
-# GitHub 发布步骤（由所有者手动执行）
+# GitHub 提交与发布步骤
 
-本轮不创建远程仓库、不初始化根目录 Git、不提交或推送。检查时根目录没有 `.git`，所以没有历史可审计；隔离的 `.cache/tmp` Git 元数据仅用于验证忽略规则，不属于项目历史。若后来已有 Git 历史，先重新扫描历史/暂存区，不直接套用“无历史”的结论。
+仓库已经完成首次发布。日常修改先在本地分支完成、测试并检查，再用中文提交信息同步 GitHub；不在网页上逐个移动源码。不强制推送或重写历史。
+
+## 已有仓库：目录重构或功能更新
+
+以下命令从项目根目录执行；分支已存在时切换到该分支，不重复创建。模型、环境、缓存和原始数据保持原路径。
+
+```powershell
+git status --short
+git switch -c refactor/project-layout
+# 修改后，按 docs/RUNNING.md 运行测试，并更新本目录的发布文件清单。
+git add --pathspec-from-file=docs/GITHUB_RELEASE_FILES.txt
+# git mv 会暂存旧路径删除；若使用其他方式移动，还需显式暂存对应的旧路径删除。
+git diff --cached --check
+git diff --cached --stat
+git commit -m '重构：按职责整理项目目录并更新启动方式'
+git push -u origin refactor/project-layout
+```
+
+可在 GitHub 创建 Pull Request 审阅并合并。只有确认远程 main 未产生冲突且可快进时，才本地 `git switch main`、`git merge --ff-only refactor/project-layout` 后推送 main。不要使用 force push；远端出现他人更新时先拉取并审查，不覆盖它们。
+
+以下保留从零创建仓库的说明，**当前仓库已存在，不重复执行 git init 或 remote add**。首次发布前“无历史”的旧安全结论不能代替当前历史/暂存区检查。
 
 建议仓库名：**SlimLLM**。
 
@@ -47,7 +67,7 @@ git status --short
 审阅后由所有者执行：
 
 ```powershell
-git commit -m 'feat: initial release of SlimLLM fine-tuning and inference demo'
+git commit -m '初始化：发布 SlimLLM 微调与推理演示项目'
 ```
 
 在 GitHub 网站手动创建空的 SlimLLM 仓库，不勾选自动生成 README、.gitignore 或 LICENSE，避免与本地已有文件产生额外初始提交。替换以下用户名，再连接远程并检查目标：

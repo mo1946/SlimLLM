@@ -11,7 +11,7 @@ import sys
 
 import psutil
 
-from runtime import ROOT, configure, file_hash, project_path, save_json
+from slimllm.runtime import ROOT, configure, file_hash, project_path, save_json
 
 
 def command(args: list[str]) -> dict:
@@ -86,7 +86,7 @@ def collect() -> dict:
         'fp16_kv_estimate':{'bytes_per_token_per_sequence':kv_per_token,
             'max_model_len':2560, 'sequence_bytes':{str(n):kv_per_token*2560*n for n in (2,4,8)},
             'note':'Capacity estimate, not measured vLLM memory; runtime preallocates according to its KV budget.'},
-        'preserved_code_sha256':{name:file_hash(ROOT/name) for name in ('api.py','request_queue.py','inference.py','benchmark.py','schema.py')},
+        'preserved_code_sha256':{name:file_hash(ROOT/name) for name in ('slimllm/serving/api.py','slimllm/serving/request_queue.py','slimllm/serving/inference.py','slimllm/evaluation/benchmark.py','slimllm/schema.py')},
         'vllm_runtime_validated':False,
         'new_installations_executed':False, 'model_inference_executed':False,
     }

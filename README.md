@@ -76,20 +76,26 @@ vLLM 0.11.2 直接向 `/v1/completions` 顶层传 `structured_outputs.json`；�
 ## 目录
 
 ```text
-api.py / inference.py / vllm_backend.py    # 接口与两种后端
-request_queue.py / response_cache.py      # FIFO 与可选 Redis
-schema.py / runtime.py                   # 七字段契约、提示词与路径
-dataset.py / baseline.py / train.py       # 合成数据、基线、QLoRA
-evaluate.py / evaluate_structured.py      # 原始输出与独立质量指标
-benchmark.py / smoke_api.py               # 性能测试与功能验证
-frontend/                                # Vue3 + Vite 源码及 lockfile
-tests/                                   # Python 契约/控制流测试
-data/                                    # Schema 与手写样例
-docs/                                    # 运行、制品、发布、简历说明
-reports/project_metrics.json             # 公开聚合指标与来源哈希
+slimllm/
+├── runtime.py / schema.py / dataset.py    # 公共路径、契约与数据处理
+├── serving/                              # FastAPI、两种推理后端、FIFO、Redis
+├── training/                             # Baseline 与 QLoRA
+├── evaluation/                           # 质量评测、压测与 API 功能检查
+└── vllm_preflight.py                      # 只读环境诊断
+frontend/                                 # Vue3 + Vite 源码及 lockfile
+scripts/windows/                          # PowerShell 环境与 WSL 安装脚本
+scripts/wsl/                              # Linux 环境安装与 vLLM 启动脚本
+configs/                                  # Redis、WSL 示例与 vLLM 候选配置
+requirements/                             # Windows/WSL 依赖与版本约束
+tests/                                    # Python 契约/控制流测试
+data/                                     # Schema 与手写样例
+docs/                                     # 运行、制品、发布、简历说明
+reports/project_metrics.json              # 公开聚合指标与来源哈希
 ```
 
 ## 本机启动与使用
+
+Python 命令从项目根目录使用 `python -m slimllm.…`，不需要安装本项目包。模块分目录后，模型、数据、缓存和 Adapter 的原路径保持不变。
 
 先按 [制品说明](docs/ARTIFACTS.md) 准备模型、Adapter 和推理提示词清单；本机这些制品已存在，无需再次下载、训练或安装。
 
@@ -99,7 +105,7 @@ reports/project_metrics.json             # 公开聚合指标与来源哈希
 Set-Location 'B:\python\SlimLLM'
 $env:SLIMLLM_BACKEND = 'transformers'
 $env:SLIMLLM_REDIS_URL = ''
-& '.\.venv\Scripts\python.exe' -B api.py --port 8000
+& '.\.venv\Scripts\python.exe' -B -m slimllm.serving.api --port 8000
 ```
 
 终端二，前端（本机依赖已安装）：

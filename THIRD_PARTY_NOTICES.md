@@ -4,7 +4,7 @@
 
 | 组件 | 核对范围与许可 | 来源 |
 | --- | --- | --- |
-| Qwen3-1.7B | 官方模型页及本地下载的 LICENSE 为 Apache-2.0；固定模型 revision 见 baseline.py | [官方模型及许可](https://huggingface.co/Qwen/Qwen3-1.7B/blob/main/LICENSE) |
+| Qwen3-1.7B | 官方模型页及本地下载的 LICENSE 为 Apache-2.0；固定模型 revision 见 slimllm/training/baseline.py | [官方模型及许可](https://huggingface.co/Qwen/Qwen3-1.7B/blob/main/LICENSE) |
 | vLLM 0.11.2 | Apache-2.0 | [固定版本 LICENSE](https://github.com/vllm-project/vllm/blob/v0.11.2/LICENSE) |
 | Transformers / PEFT / TRL / Accelerate / Datasets / Hugging Face Hub / safetensors | 本机安装元数据为 Apache 系列许可 | [Transformers](https://github.com/huggingface/transformers/blob/main/LICENSE)、[PEFT](https://github.com/huggingface/peft/blob/main/LICENSE)、[TRL](https://github.com/huggingface/trl/blob/main/LICENSE) |
 | PyTorch | 本机 2.14.0 元数据含 BSD、Apache、MIT、BSL 及 LLVM exception 等组合条款；不简写成单一许可 | [上游许可证](https://github.com/pytorch/pytorch/blob/main/LICENSE)，以安装包内各子组件声明为准 |

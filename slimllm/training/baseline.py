@@ -9,7 +9,7 @@ from pathlib import Path
 import time
 import urllib.request
 
-from runtime import append_jsonl, configure, extraction_prompt, file_hash, project_path, read_jsonl, save_json
+from slimllm.runtime import append_jsonl, configure, extraction_prompt, file_hash, project_path, read_jsonl, save_json
 
 MODEL_ID = 'Qwen/Qwen3-1.7B'
 REVISION = '70d244cc86ccca08cf5af4e1e306ecf908b1ad5e'

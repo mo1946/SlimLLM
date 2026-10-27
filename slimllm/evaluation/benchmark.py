@@ -16,9 +16,9 @@ from zoneinfo import ZoneInfo
 import httpx
 from pydantic import ValidationError
 
-from evaluate import FIELDS, strict_json
-from runtime import ROOT, append_jsonl, configure, file_hash, project_path, read_jsonl, save_json
-from schema import AfterSalesTicket
+from slimllm.evaluation.evaluate import FIELDS, strict_json
+from slimllm.runtime import ROOT, append_jsonl, configure, file_hash, project_path, read_jsonl, save_json
+from slimllm.schema import AfterSalesTicket
 
 
 def latency_stats(values: list[float]) -> dict:
@@ -196,7 +196,7 @@ async def run(args):
             'safety': 'Stop future waves/phases on OOM, transport timeout, <512MiB free, >=95% card memory or failed memory probe. Expected model_busy does not trigger retries.',
             'python': platform.python_version(), 'platform': platform.platform(),
             'packages': {name: metadata.version(name) for name in ('httpx', 'fastapi', 'torch', 'transformers', 'peft')},
-            'code_sha256': {name: file_hash(ROOT / name) for name in ('benchmark.py', 'api.py', 'inference.py', 'schema.py', 'request_queue.py')},
+            'code_sha256': {name: file_hash(ROOT / name) for name in ('slimllm/evaluation/benchmark.py', 'slimllm/serving/api.py', 'slimllm/serving/inference.py', 'slimllm/schema.py', 'slimllm/serving/request_queue.py')},
             'ttft': None, 'ttft_note': 'Existing /extract is non-streaming; TTFT cannot be measured.',
             'latency': 'Client full HTTP response; all requests and HTTP successes reported separately; linear-interpolated percentiles.',
             'quality_denominators': 'HTTP 2xx, strict ticket JSON, schema and exact-label fields tracked separately. HTTP errors never count as valid ticket JSON/schema; failed requests count wrong in all-attempt accuracy.',

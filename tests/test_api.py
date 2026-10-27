@@ -9,12 +9,12 @@ from unittest.mock import patch
 
 from fastapi.testclient import TestClient
 
-from api import create_app
-from inference import InputTooLong, InvalidModelOutput, validate_output
-from response_cache import RedisExactCache
-from runtime import ROOT, read_jsonl
-from schema import AfterSalesTicket
-from vllm_backend import BackendRequestRejected, BackendTimeout, BackendUnavailable
+from slimllm.serving.api import create_app
+from slimllm.serving.inference import InputTooLong, InvalidModelOutput, validate_output
+from slimllm.serving.response_cache import RedisExactCache
+from slimllm.runtime import ROOT, read_jsonl
+from slimllm.schema import AfterSalesTicket
+from slimllm.serving.vllm_backend import BackendRequestRejected, BackendTimeout, BackendUnavailable
 
 
 EXAMPLE = read_jsonl(ROOT / 'data/examples.jsonl')[0]

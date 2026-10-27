@@ -12,12 +12,12 @@ from unittest.mock import Mock, patch
 from fastapi.testclient import TestClient
 import httpx
 
-from api import create_app
-from inference import InputTooLong, InvalidModelOutput
-from response_cache import RedisExactCache
-from runtime import ROOT, read_jsonl
-from schema import AfterSalesTicket
-from vllm_backend import BackendRequestRejected, BackendTimeout, BackendUnavailable, VllmExtractor
+from slimllm.serving.api import create_app
+from slimllm.serving.inference import InputTooLong, InvalidModelOutput
+from slimllm.serving.response_cache import RedisExactCache
+from slimllm.runtime import ROOT, read_jsonl
+from slimllm.schema import AfterSalesTicket
+from slimllm.serving.vllm_backend import BackendRequestRejected, BackendTimeout, BackendUnavailable, VllmExtractor
 
 EXAMPLE = read_jsonl(ROOT/'data/examples.jsonl')[0]
 
@@ -79,7 +79,7 @@ class VllmTests(unittest.TestCase):
         client = httpx.Client(base_url='http://127.0.0.1:8001', transport=httpx.MockTransport(handler))
         with patch.dict('os.environ'), \
              patch('transformers.AutoTokenizer.from_pretrained', return_value=TokenizerFixture()), \
-             patch('vllm_backend.httpx.Client', return_value=client):
+             patch('slimllm.serving.vllm_backend.httpx.Client', return_value=client):
             engine.load()
         return engine
 
@@ -227,9 +227,9 @@ class VllmTests(unittest.TestCase):
 
     def test_protocol_revision_and_grammar_backend_are_in_fingerprint(self):
         original = self.loaded_engine()
-        with patch('vllm_backend.REQUEST_PROTOCOL_REVISION', 'unit-fixture-v2'):
+        with patch('slimllm.serving.vllm_backend.REQUEST_PROTOCOL_REVISION', 'unit-fixture-v2'):
             revised = self.loaded_engine()
-        with patch('vllm_backend.STRUCTURED_OUTPUT_BACKEND', 'unit-fixture-backend'):
+        with patch('slimllm.serving.vllm_backend.STRUCTURED_OUTPUT_BACKEND', 'unit-fixture-backend'):
             other_backend = self.loaded_engine()
         self.assertNotEqual(original.fingerprint, revised.fingerprint)
         self.assertNotEqual(original.fingerprint, other_backend.fingerprint)

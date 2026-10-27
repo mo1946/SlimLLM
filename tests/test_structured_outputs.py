@@ -9,10 +9,10 @@ from unittest.mock import patch
 
 import httpx
 
-from evaluate_structured import (REGRESSION_SHA256, assess_output, collect_completion,
+from slimllm.evaluation.evaluate_structured import (REGRESSION_SHA256, assess_output, collect_completion,
                                  compare, completion_valid, load_evaluation_data, score_structured)
-from runtime import ROOT, file_hash, read_jsonl
-from schema import AfterSalesTicket
+from slimllm.runtime import ROOT, file_hash, read_jsonl
+from slimllm.schema import AfterSalesTicket
 
 
 BASE = read_jsonl(ROOT / 'data/examples.jsonl')[0]
@@ -153,7 +153,7 @@ class StructuredScoringTests(unittest.TestCase):
         self.assertEqual(datasets['regression'][5]['label']['order_id'], '000012')
 
     def test_changed_regression_hash_is_not_silently_accepted(self):
-        with patch('evaluate_structured.file_hash', return_value='changed'):
+        with patch('slimllm.evaluation.evaluate_structured.file_hash', return_value='changed'):
             with self.assertRaisesRegex(ValueError, 'Regression labels changed'):
                 load_evaluation_data()
 
@@ -229,7 +229,7 @@ class StructuredProtocolTests(unittest.TestCase):
     def run_fixture(self, folder, factory):
         # Every generated report is explicitly marked unit_test_fixture and is
         # confined to an automatically cleaned temporary test directory.
-        with patch('evaluate_structured.load_evaluation_data', return_value=(self.datasets, {'scope': 'unit_fixture'})):
+        with patch('slimllm.evaluation.evaluate_structured.load_evaluation_data', return_value=(self.datasets, {'scope': 'unit_fixture'})):
             return compare(str(folder), engine_factory=factory)
 
     def test_collector_preserves_raw_before_any_output_validation(self):
@@ -279,7 +279,7 @@ class StructuredProtocolTests(unittest.TestCase):
                 self.assertEqual(len(persisted), len(rows))
                 return original_score(rows, predictions)
 
-            with patch('evaluate_structured.score_structured', side_effect=score_after_write):
+            with patch('slimllm.evaluation.evaluate_structured.score_structured', side_effect=score_after_write):
                 result = self.run_fixture(folder, self.factory())
             self.assertTrue(result['completed_all_requests'])
             self.assertEqual(result['evidence_kind'], 'unit_test_fixture')
@@ -346,7 +346,7 @@ class StructuredProtocolTests(unittest.TestCase):
 
     def test_artifact_drift_aborts_before_first_generation(self):
         with tempfile.TemporaryDirectory(prefix='unit_structured_', dir=ROOT / 'reports') as temporary:
-            with patch('evaluate_structured._artifact_snapshot', side_effect=[{'fixture': 'before'}, {'fixture': 'changed'}]):
+            with patch('slimllm.evaluation.evaluate_structured._artifact_snapshot', side_effect=[{'fixture': 'before'}, {'fixture': 'changed'}]):
                 result = self.run_fixture(Path(temporary) / 'run', self.factory())
             self.assertFalse(result['completed_all_requests'])
             self.assertIn('Frozen artifacts changed', result['aborted_reason'])
@@ -369,7 +369,7 @@ class StructuredProtocolTests(unittest.TestCase):
 
     def test_output_guard_rejects_existing_and_outside_reports_before_loading(self):
         with tempfile.TemporaryDirectory(prefix='unit_structured_', dir=ROOT / 'reports') as temporary:
-            with patch('evaluate_structured.load_evaluation_data', side_effect=AssertionError('No data or engine loading')):
+            with patch('slimllm.evaluation.evaluate_structured.load_evaluation_data', side_effect=AssertionError('No data or engine loading')):
                 for folder in (temporary, str(ROOT / '.cache/invalid_comparison_output')):
                     with self.subTest(folder=folder), self.assertRaises(ValueError):
                         compare(folder)
@@ -377,8 +377,8 @@ class StructuredProtocolTests(unittest.TestCase):
     def test_default_client_rejects_nonlocal_url_without_loading_model(self):
         with tempfile.TemporaryDirectory(prefix='unit_structured_', dir=ROOT / 'reports') as temporary:
             with patch.dict('os.environ', {'SLIMLLM_VLLM_URL': 'https://example.invalid'}), \
-                 patch('evaluate_structured.load_evaluation_data', return_value=(self.datasets, {'scope': 'unit_fixture'})), \
-                 patch('vllm_backend.VllmExtractor.load', side_effect=AssertionError('No network or model loading')):
+                 patch('slimllm.evaluation.evaluate_structured.load_evaluation_data', return_value=(self.datasets, {'scope': 'unit_fixture'})), \
+                 patch('slimllm.serving.vllm_backend.VllmExtractor.load', side_effect=AssertionError('No network or model loading')):
                 result = compare(str(Path(temporary) / 'run'))
             self.assertFalse(result['completed_all_requests'])
             self.assertIn('local HTTP endpoint', result['aborted_reason'])

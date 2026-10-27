@@ -6,7 +6,7 @@ import unittest
 
 from pydantic import ValidationError
 
-from schema import AfterSalesTicket
+from slimllm.schema import AfterSalesTicket
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -92,8 +92,8 @@ class SchemaTests(unittest.TestCase):
     def test_grammar_preflight_fixture_expectations(self) -> None:
         # Fixtures exercise the real Linux grammar separately; this only checks
         # that their expected contract agrees with current Windows Pydantic.
-        from evaluate import strict_json
-        from evaluate_structured import schema_check_cases
+        from slimllm.evaluation.evaluate import strict_json
+        from slimllm.evaluation.evaluate_structured import schema_check_cases
 
         cases = schema_check_cases()
         self.assertEqual(len(cases), len({case['id'] for case in cases}))

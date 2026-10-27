@@ -1,0 +1,8 @@
+# Draft only. Do not overwrite an existing %UserProfile%\.wslconfig.
+# After separate approval, merge reviewed settings into that global Windows file.
+[wsl2]
+memory=8GB
+processors=4
+swap=2GB
+swapfile=B:\\python\\SlimLLM\\.cache\\wsl-swap.vhdx
+localhostForwarding=true

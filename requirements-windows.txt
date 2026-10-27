@@ -1,0 +1,15 @@
+# Existing Windows Python 3.13 environment inventory, not a cross-platform lock.
+# Installation/download requires approval. Read docs/RUNNING.md first.
+# Shared large packages are explicitly listed; constraints alone do not install them.
+--extra-index-url https://download.pytorch.org/whl/cu126
+-c constraints-stage2.txt
+-r requirements-api-lock.txt
+-r requirements-stage2-lock.txt
+torch==2.14.0+cu126
+transformers==5.16.1
+safetensors==0.8.0
+tokenizers==0.23.2
+huggingface-hub==1.30.0
+numpy==2.5.3
+pandas==3.0.5
+httpx==0.28.1

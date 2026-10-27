@@ -1,0 +1,18 @@
+# 手写功能输入；README 的响应摘自已有真实调用记录。
+# 本文件是请求文本示例，不需要安装扩展才能运行项目。
+@baseUrl = http://127.0.0.1:8000
+
+### 健康检查：就绪 200，后端不可用 503
+GET {{baseUrl}}/health
+
+### 抽取：模型已就绪时返回七字段 JSON
+POST {{baseUrl}}/extract
+Content-Type: application/json
+
+{"text":"订单001234的蓝牙耳机左耳没有声音，我想退货退款。"}
+
+### 参数拒绝：预期 422，不调用模型
+POST {{baseUrl}}/extract
+Content-Type: application/json
+
+{"text":""}

@@ -1,0 +1,115 @@
+{
+  "additionalProperties": false,
+  "description": "七个键全部必填；未知实体为 null，未知分类使用 unknown/other。",
+  "properties": {
+    "intent": {
+      "description": "售后办理请求、单纯投诉、咨询或其他；有明确办理请求优先标为 aftersales_request。",
+      "enum": [
+        "aftersales_request",
+        "complaint",
+        "inquiry",
+        "other"
+      ],
+      "title": "Intent",
+      "type": "string"
+    },
+    "order_id": {
+      "anyOf": [
+        {
+          "maxLength": 64,
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "原文明确提供的订单号，保留前导零；未提供为 null，不推断。",
+      "title": "Order Id"
+    },
+    "product_name": {
+      "anyOf": [
+        {
+          "maxLength": 120,
+          "minLength": 1,
+          "pattern": "\\S",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "原文中的商品名称片段；未提供为 null，不补充品牌或型号。",
+      "title": "Product Name"
+    },
+    "issue_type": {
+      "description": "功能质量、破损、缺件、错发、物流、描述不符、明确无理由、其他或未知。",
+      "enum": [
+        "quality",
+        "damaged",
+        "missing",
+        "wrong_item",
+        "logistics",
+        "not_as_described",
+        "no_reason",
+        "other",
+        "unknown"
+      ],
+      "title": "Issue Type",
+      "type": "string"
+    },
+    "priority": {
+      "description": "人身/财产安全风险 urgent；明确催急 high；明确不急 low；其余 normal。",
+      "enum": [
+        "low",
+        "normal",
+        "high",
+        "urgent"
+      ],
+      "title": "Priority",
+      "type": "string"
+    },
+    "requested_action": {
+      "description": "仅退款、退货退款、换货、维修、补发、查催物流、其他或未明确。",
+      "enum": [
+        "refund",
+        "return_refund",
+        "exchange",
+        "repair",
+        "reship",
+        "track_delivery",
+        "other",
+        "unknown"
+      ],
+      "title": "Requested Action",
+      "type": "string"
+    },
+    "reason": {
+      "anyOf": [
+        {
+          "maxLength": 300,
+          "minLength": 1,
+          "pattern": "\\S",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "description": "支持问题分类的最短完整原文连续片段；无明确原因则为 null，不生成解释。",
+      "title": "Reason"
+    }
+  },
+  "required": [
+    "intent",
+    "order_id",
+    "product_name",
+    "issue_type",
+    "priority",
+    "requested_action",
+    "reason"
+  ],
+  "title": "AfterSalesTicket",
+  "type": "object"
+}

@@ -1,0 +1,8 @@
+# Linux/WSL Python 3.12 only. Never install into the Windows .venv.
+# Explicit local CUDA versions prevent selecting a newer PyTorch CUDA build.
+vllm==0.11.2
+torch==2.9.0+cu128
+torchaudio==2.9.0+cu128
+torchvision==0.24.0+cu128
+transformers==4.57.1
+numpy==2.2.6

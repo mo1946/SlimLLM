@@ -1,0 +1,5 @@
+{"id":"manual-001","text":"订单001234的蓝牙耳机左耳没有声音，我想退货退款。","label":{"intent":"aftersales_request","order_id":"001234","product_name":"蓝牙耳机","issue_type":"quality","priority":"normal","requested_action":"return_refund","reason":"左耳没有声音"}}
+{"id":"manual-002","text":"订单TB-20260002的玻璃杯收到时杯口已经碎了，请换货，我急着用。","label":{"intent":"aftersales_request","order_id":"TB-20260002","product_name":"玻璃杯","issue_type":"damaged","priority":"high","requested_action":"exchange","reason":"杯口已经碎了"}}
+{"id":"manual-003","text":"订单JD_003的电饭煲少了量杯，请补发，不着急。","label":{"intent":"aftersales_request","order_id":"JD_003","product_name":"电饭煲","issue_type":"missing","priority":"low","requested_action":"reship","reason":"少了量杯"}}
+{"id":"manual-004","text":"我的快递三天没更新物流了，帮我查一下。","label":{"intent":"aftersales_request","order_id":null,"product_name":null,"issue_type":"logistics","priority":"normal","requested_action":"track_delivery","reason":"三天没更新物流了"}}
+{"id":"manual-005","text":"请问售后服务几点上班？","label":{"intent":"inquiry","order_id":null,"product_name":null,"issue_type":"unknown","priority":"normal","requested_action":"unknown","reason":null}}

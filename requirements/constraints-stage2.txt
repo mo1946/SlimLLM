@@ -1,0 +1,8 @@
+# Protect the large dependencies already shared from the existing environment.
+torch==2.14.0+cu126
+transformers==5.16.1
+safetensors==0.8.0
+tokenizers==0.23.2
+huggingface-hub==1.30.0
+numpy==2.5.3
+pandas==3.0.5

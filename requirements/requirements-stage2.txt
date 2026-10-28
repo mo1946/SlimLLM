@@ -1,0 +1,6 @@
+# Stage-two direct dependencies already validated locally; this file is not a full environment lock.
+peft==0.21.2
+trl==1.16.0
+bitsandbytes==0.50.2
+accelerate==1.15.0
+datasets==4.8.5

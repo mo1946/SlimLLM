@@ -1,0 +1,45 @@
+{
+  "status": "validated_model_lora_api_and_c1_c2_c4_c8_benchmark_completed_services_stopped",
+  "runtime_validated": true,
+  "vllm_version": "0.11.2",
+  "version_gate": "Validated in Ubuntu 24.04.5 / WSL2 with vLLM 0.11.2 and PyTorch 2.9.0+cu128: real CUDA, original model/LoRA, schema extraction, 128 benchmark requests and Transformers fallback. See reports/vllm.md and the saved Linux package lock.",
+  "model": "/mnt/b/python/SlimLLM/.cache/huggingface/qwen3-1.7b",
+  "adapter": "/mnt/b/python/SlimLLM/outputs/qlora/final_adapter",
+  "served_model_name": "slimllm-base",
+  "lora_name": "slimllm-lora",
+  "host": "127.0.0.1",
+  "port": 8001,
+  "dtype": "float16",
+  "enable_lora": true,
+  "max_loras": 1,
+  "max_lora_rank": 8,
+  "tensor_parallel_size": 1,
+  "pipeline_parallel_size": 1,
+  "gpu_memory_utilization": 0.7,
+  "max_model_len": 2560,
+  "max_num_seqs": 2,
+  "max_num_batched_tokens": 2048,
+  "enable_chunked_prefill": true,
+  "enable_prefix_caching": false,
+  "enforce_eager": true,
+  "cpu_offload_gb": 0,
+  "swap_space_gb": 0,
+  "request": {
+    "model": "slimllm-lora",
+    "temperature": 0,
+    "seed": 42,
+    "max_tokens": 384,
+    "stream": false,
+    "chat_template_kwargs": {
+      "enable_thinking": false
+    }
+  },
+  "notes": [
+    "Continuous batching is vLLM scheduler behavior, not a separate enable_continuous_batching switch.",
+    "Do not run the resident Transformers model at the same time on this 8GB GPU.",
+    "The validated opt-in HTTP gateway admits 2 bounded concurrent calls; the default Transformers FIFO still uses one model thread.",
+    "The original adapter metadata has a Windows base path. Pass the explicit local Linux model path; if the selected loader rejects metadata, create a separate config-only view and symlink the original weights, never overwrite the original or copy weights.",
+    "The gateway preserves the frozen prompt and 2048-token input limit. This candidate records the original unconstrained performance setup; current structured_outputs/guidance policy is configured by scripts/wsl/run_vllm.sh and slimllm/serving/vllm_backend.py. Postvalidation remains strict; no JSON repair.",
+    "Flags checked against the installed version's --help=all; scripts/wsl/run_vllm.sh is the verified launch command. Services were stopped after testing."
+  ]
+}
